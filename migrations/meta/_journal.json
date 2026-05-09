@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1769897097870,
-      "tag": "0000_past_kylun",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1771890658236,
-      "tag": "0001_nostalgic_maddog",
+      "when": 1778329177648,
+      "tag": "0000_initial_full_schema",
       "breakpoints": true
     }
   ]

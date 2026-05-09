@@ -4,7 +4,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic, log } from "./static";
 import { restoreSubagentRunsOnStart, startSubagentSweeper } from "./subagentRegistry";
-import { runAutoMigrations } from "./db";
+import { runAutoMigrations, runDrizzleMigrations } from "./db";
 import { modelHealth } from "./modelHealthTracker";
 import path from "path";
 
@@ -46,7 +46,9 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Автоматические миграции БД (идемпотентные, безопасные при каждом запуске)
+  // Drizzle-миграции: создаёт все таблицы из schema (идемпотентно)
+  await runDrizzleMigrations();
+  // Дополнительные ALTER TABLE миграции (идемпотентные, безопасные при каждом запуске)
   await runAutoMigrations();
 
   const server = await registerRoutes(app);

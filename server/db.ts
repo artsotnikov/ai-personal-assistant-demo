@@ -1,6 +1,9 @@
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import * as schema from "@shared/schema";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
@@ -11,6 +14,25 @@ if (!process.env.DATABASE_URL) {
 // Стандартный PostgreSQL драйвер для Amvera (не Neon Serverless)
 export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 export const db = drizzle(pool, { schema });
+
+/**
+ * Запуск Drizzle-миграций (CREATE TABLE и т.д.) из папки migrations/.
+ * Идемпотентно — Drizzle отслеживает выполненные миграции в таблице __drizzle_migrations.
+ */
+export async function runDrizzleMigrations(): Promise<void> {
+  try {
+    // Определяем путь к миграциям относительно текущего файла
+    const currentDir = path.dirname(fileURLToPath(import.meta.url));
+    const migrationsFolder = path.resolve(currentDir, '..', 'migrations');
+    
+    console.log(`[DrizzleMigrate] 🔄 Запуск миграций из ${migrationsFolder}...`);
+    await migrate(db, { migrationsFolder });
+    console.log('[DrizzleMigrate] ✅ Миграции выполнены успешно');
+  } catch (err: any) {
+    console.error('[DrizzleMigrate] ❌ Ошибка миграций:', err?.message || err);
+    throw err; // Критическая ошибка — не запускать приложение без схемы
+  }
+}
 
 /**
  * Автоматические миграции при старте приложения.
