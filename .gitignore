@@ -14,7 +14,7 @@ uploads/
 !.env.example
 
 # Личные данные и документы
-vault/
+/vault/
 attached_assets/
 
 # Временные тестовые файлы
