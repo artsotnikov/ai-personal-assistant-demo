@@ -1,0 +1,204 @@
+/**
+ * ⚠️⚠️⚠️ АРХИВНЫЙ ФАЙЛ — НЕ ИСПОЛЬЗОВАТЬ! ⚠️⚠️⚠️
+ * 
+ * Этот файл ПЕРЕЗАПИСЫВАЕТ все настройки AI в базе данных!
+ * Для изменения настроек используйте UI: Настройки → Агенты/Модели
+ * 
+ * Файл сохранён как справочник для добавления новых агентов.
+ * Если нужно добавить новый агент — используйте API:
+ *   POST /api/ai-configs
+ * 
+ * Или напрямую через SQL:
+ *   INSERT INTO ai_model_configs (task_type, provider, model, ...) VALUES (...)
+ * 
+ * ═══════════════════════════════════════════════════════════════════
+ * 
+ * Seed script (АРХИВ) — заполнение таблицы ai_model_configs начальными данными
+ * 
+ * Запуск: npx tsx server/seedAIConfigs.ts  <-- НЕ ЗАПУСКАТЬ!
+ */
+
+import 'dotenv/config';
+import { db } from "./db";
+import { aiModelConfigs } from "@shared/schema";
+
+const configs = [
+    {
+        taskType: 'goal_extraction',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.2',
+        maxTokens: 500,
+        description: 'Извлечение целей из сообщений',
+        systemPrompt: 'Ты — эксперт по анализу целей пользователя. Твоя задача — извлекать НАСТОЯЩИЕ долгосрочные жизненные цели из сообщений. Игнорируй напоминания, одноразовые задачи и тестовые сообщения. Отвечай строго в JSON формате.'
+    },
+    {
+        taskType: 'fact_extraction',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.3',
+        maxTokens: 800,
+        description: 'Извлечение фактов',
+        systemPrompt: 'Ты — аналитик, извлекающий ключевые факты о бизнесе, жизни, планах и проблемах пользователя. Каждый факт должен быть конкретным утверждением, привязанным к теме. Отвечай строго в JSON формате.'
+    },
+    {
+        taskType: 'profile_analysis',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.3',
+        maxTokens: 1000,
+        description: 'Анализ профиля пользователя',
+        systemPrompt: 'Ты — психолог-аналитик, анализирующий профиль пользователя на основе собранных данных. Формируй выводы о личности, ценностях, сильных и слабых сторонах. Будь объективен и основывайся только на фактах.'
+    },
+    {
+        taskType: 'profile_extraction',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.2',
+        maxTokens: 500,
+        description: 'Инкрементальное извлечение профиля из сообщений',
+        systemPrompt: 'Ты — аналитик, который извлекает информацию о личности пользователя из его сообщений. Извлекай только явно упомянутую информацию о характере, ценностях, сильных и слабых сторонах, стиле общения. Не делай предположений. Отвечай строго в JSON формате.'
+    },
+    {
+        taskType: 'topic_detection',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.3',
+        maxTokens: 300,
+        description: 'Определение темы сообщения',
+        systemPrompt: 'Ты — эксперт по категоризации. Определяй темы сообщений в формате "Категория/Подтема". Основные категории: Бизнес, Финансы, Психология, Здоровье, Личное, Карьера, Образование. Отвечай только JSON-массивом тем.'
+    },
+    {
+        taskType: 'topic_normalization',
+        provider: 'custom',
+        model: 'gemini-3-flash',
+        temperature: '0.1',
+        maxTokens: 200,
+        description: 'Нормализация категорий тем',
+        systemPrompt: 'Ты — эксперт по категоризации. Определи, нужно ли использовать существующую тему или создать новую. Отвечай ТОЛЬКО валидным JSON.'
+    },
+    {
+        taskType: 'entity_extraction',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.3',
+        maxTokens: 1000,
+        description: 'Извлечение сущностей и связей из текста',
+        systemPrompt: 'Ты — аналитик, извлекающий именованные сущности (люди, организации, концепции, события, места) и связи между ними. Используй гибридную структуру с baseType и свободным subType. Отвечай строго в JSON формате.'
+    },
+    {
+        taskType: 'reminder_extraction',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.2',
+        maxTokens: 500,
+        description: 'Извлечение напоминаний из сообщений',
+        systemPrompt: 'Ты — ассистент, который извлекает напоминания из сообщений пользователя. Определяй что напомнить, когда напомнить (в ISO 8601 формате с таймзоной +03:00) и приоритет. Отвечай строго в JSON формате.'
+    },
+    {
+        taskType: 'agent_routing',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.2',
+        maxTokens: 500,
+        description: 'Маршрутизация к агентам',
+        systemPrompt: 'Ты — маршрутизатор запросов. Анализируй сообщение пользователя и определяй, какой специализированный агент (business, finance, psychology) лучше всего подходит для ответа. Отвечай строго в JSON формате.'
+    },
+    {
+        taskType: 'agent_business',
+        provider: 'openrouter',
+        model: 'anthropic/claude-sonnet-4.5',
+        temperature: '0.7',
+        maxTokens: 7000,
+        description: 'Бизнес-консультант',
+        systemPrompt: 'Ты — опытный бизнес-консультант. Помогай пользователю с вопросами стратегии, маркетинга, продаж, управления командой и развития бизнеса. Давай конкретные практические рекомендации.'
+    },
+    {
+        taskType: 'agent_finance',
+        provider: 'openrouter',
+        model: 'anthropic/claude-sonnet-4.5',
+        temperature: '0.6',
+        maxTokens: 7000,
+        description: 'Финансовый консультант',
+        systemPrompt: 'Ты — финансовый консультант. Помогай пользователю с личными финансами, инвестициями, бюджетированием, налогами и финансовым планированием. Давай конкретные практические рекомендации с цифрами.'
+    },
+    {
+        taskType: 'agent_psychology',
+        provider: 'openrouter',
+        model: 'anthropic/claude-sonnet-4.5',
+        temperature: '0.8',
+        maxTokens: 7000,
+        description: 'Психолог-коуч',
+        systemPrompt: 'Ты — психолог-коуч. Помогай пользователю с самопознанием, мотивацией, преодолением страхов, выстраиванием отношений и личностным ростом. Проявляй эмпатию и задавай уточняющие вопросы.'
+    },
+    {
+        taskType: 'conversation_summary',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.3',
+        maxTokens: 1024,
+        description: 'Саммари разговоров',
+        systemPrompt: 'Ты — аналитик, создающий краткие и информативные саммари диалогов. Выделяй ключевые темы, решения и действия. Будь лаконичен, но сохраняй важные детали.'
+    },
+    {
+        taskType: 'insight_analysis',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.5',
+        maxTokens: 1500,
+        description: 'Генерация инсайтов',
+        systemPrompt: 'Ты — аналитик паттернов поведения. Анализируй данные пользователя и генерируй полезные инсайты о его привычках, прогрессе и возможностях улучшения. Будь конструктивен и позитивен.'
+    },
+    {
+        taskType: 'query_planning',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.2',
+        maxTokens: 500,
+        description: 'Планирование запросов к памяти',
+        systemPrompt: 'Ты — планировщик запросов. Анализируй вопросы пользователя и определяй, какие данные из памяти нужны для ответа: факты, цели, профиль, сущности. Отвечай строго в JSON формате.'
+    },
+    {
+        taskType: 'default',
+        provider: 'openrouter',
+        model: 'openai/gpt-4.1-mini',
+        temperature: '0.3',
+        maxTokens: 500,
+        description: 'Настройки по умолчанию',
+        systemPrompt: 'Ты — универсальный AI-ассистент. Помогай пользователю с любыми вопросами, будь полезен и информативен.'
+    },
+];
+
+async function seed() {
+    console.log('🌱 Заполнение таблицы ai_model_configs...\n');
+
+    for (const cfg of configs) {
+        try {
+            await db.insert(aiModelConfigs)
+                .values(cfg)
+                .onConflictDoUpdate({
+                    target: aiModelConfigs.taskType,
+                    set: {
+                        provider: cfg.provider,
+                        model: cfg.model,
+                        temperature: cfg.temperature,
+                        maxTokens: cfg.maxTokens,
+                        description: cfg.description,
+                        systemPrompt: cfg.systemPrompt,
+                        updatedAt: new Date(),
+                    }
+                });
+            console.log(`✅ ${cfg.taskType}: ${cfg.provider}/${cfg.model}`);
+        } catch (error) {
+            console.error(`❌ ${cfg.taskType}:`, error);
+        }
+    }
+
+    console.log('\n🎉 Seed завершён!');
+    process.exit(0);
+}
+
+seed().catch(err => {
+    console.error('Ошибка seed:', err);
+    process.exit(1);
+});

@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --chat-font-size: 14px;
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Custom chat colors */
+  --chat-blue: hsl(207, 90%, 54%);
+  --chat-gray: hsl(210, 17%, 95%);
+  --chat-dark: hsl(210, 11%, 15%);
+  --success: hsl(142, 76%, 36%);
+  --warning: hsl(38, 92%, 50%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100); /* Динамическая высота для мобильных */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    
+    /* Убираем выделение текста на мобильных */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Разрешаем выделение в полях ввода и текстовом контенте */
+  input, textarea, [contenteditable], .message-text, .markdown, .prose, .prose p, .prose li, .selectable-text {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}
+
+@layer utilities {
+  .message-bubble {
+    word-wrap: break-word;
+  }
+  
+  /* Пользовательские сообщения - ограниченная ширина */
+  .message-bubble-user {
+    max-width: 70%;
+  }
+  
+  /* Сообщения ИИ - ограниченная ширина на десктопе */
+  .message-bubble-ai {
+    max-width: 70%;
+  }
+  
+  @media (max-width: 768px) {
+    /* На мобильных пользовательские сообщения чуть шире */
+    .message-bubble-user {
+      max-width: 85%;
+    }
+    
+    /* На мобильных сообщения ИИ используют всю ширину */
+    .message-bubble-ai {
+      max-width: 95%;
+    }
+  }
+  
+  .markdown h1, .markdown h2, .markdown h3 {
+    font-weight: 600;
+    margin: 1em 0 0.5em 0;
+  }
+  
+  .markdown h1 { font-size: 1.5em; }
+  .markdown h2 { font-size: 1.3em; }
+  .markdown h3 { font-size: 1.1em; }
+  
+  .markdown p {
+    margin: 0.5em 0;
+  }
+  
+  .markdown ul, .markdown ol {
+    margin: 0.5em 0;
+    padding-left: 1.5em;
+  }
+  
+  .markdown code {
+    background-color: hsl(210, 17%, 95%);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  
+  .markdown pre {
+    background-color: hsl(210, 17%, 95%);
+    padding: 1em;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1em 0;
+  }
+  
+  .chat-blue {
+    color: var(--chat-blue);
+  }
+  
+  /* Простые правила для PWA без блокировки прокрутки */
+  #root {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Простые правила для прокрутки сообщений */
+  .chat-messages {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    flex: 1;
+    min-height: 0;
+    position: relative;
+  }
+  
+  /* Запрещаем pull-to-refresh только на шапке и поле ввода */
+  .chat-header, .input-area {
+    overscroll-behavior-y: none;
+    flex-shrink: 0;
+  }
+  
+  /* Только для body - запрещаем overscroll-behavior для pull-to-refresh */
+  body {
+    overscroll-behavior-y: none;
+  }
+  
+  .bg-chat-blue {
+    background-color: var(--chat-blue);
+  }
+  
+  .success {
+    color: var(--success);
+  }
+  
+  .bg-success {
+    background-color: var(--success);
+  }
+
+  /* Scrollbar hiding for quick commands */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

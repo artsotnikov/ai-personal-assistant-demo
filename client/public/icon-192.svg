@@ -1,0 +1,28 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон с градиентом -->
+  <rect width="192" height="192" rx="32" fill="url(#gradient0_linear_1_1)"/>
+  
+  <!-- Лампочка -->
+  <g transform="translate(96, 96)">
+    <!-- Колба лампочки -->
+    <ellipse cx="0" cy="-8" rx="28" ry="36" fill="#fff8dc" stroke="#f59e0b" stroke-width="3"/>
+    
+    <!-- Спираль внутри -->
+    <path d="M-16 -24 Q0 -20 16 -24 Q0 -16 -16 -12 Q0 -8 16 -4" stroke="#f59e0b" stroke-width="2" fill="none"/>
+    
+    <!-- Цоколь -->
+    <rect x="-12" y="18" width="24" height="8" rx="2" fill="#9ca3af"/>
+    <rect x="-10" y="26" width="20" height="6" rx="1" fill="#6b7280"/>
+    
+    <!-- Блики для эффекта свечения -->
+    <ellipse cx="-8" cy="-20" rx="4" ry="6" fill="#ffffff" opacity="0.6"/>
+    <circle cx="12" cy="-12" r="2" fill="#ffffff" opacity="0.4"/>
+  </g>
+  
+  <defs>
+    <linearGradient id="gradient0_linear_1_1" x1="0" y1="0" x2="192" y2="192" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#1e40af"/>
+    </linearGradient>
+  </defs>
+</svg>

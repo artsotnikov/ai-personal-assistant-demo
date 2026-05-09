@@ -1,0 +1,26 @@
+node_modules
+dist
+.DS_Store
+server/public
+vite.config.ts.*
+*.tar.gz
+
+# Загруженные файлы (голосовые сообщения, изображения и т.д.)
+uploads/
+
+# Environment и секреты
+.env
+.env.*
+!.env.example
+
+# Личные данные и документы
+vault/
+attached_assets/
+
+# Временные тестовые файлы
+tmp_test_*.ts
+
+# MLO данные (анализ, временные файлы)
+mlo/
+# Исследовательские клоны сторонних проектов (анализ архитектуры)
+.research/openclaw/
