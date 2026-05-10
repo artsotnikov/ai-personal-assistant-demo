@@ -1,4 +1,4 @@
-CREATE TABLE "advisor_feedback" (
+CREATE TABLE IF NOT EXISTS "advisor_feedback" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"proactive_message_id" integer,
 	"advice_type" text NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE "advisor_feedback" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "agents" (
+CREATE TABLE IF NOT EXISTS "agents" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"slug" text NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE "agents" (
 	CONSTRAINT "agents_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "ai_model_configs" (
+CREATE TABLE IF NOT EXISTS "ai_model_configs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"task_type" text NOT NULL,
 	"provider" text NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE "ai_model_configs" (
 	CONSTRAINT "ai_model_configs_task_type_unique" UNIQUE("task_type")
 );
 --> statement-breakpoint
-CREATE TABLE "ai_prompts" (
+CREATE TABLE IF NOT EXISTS "ai_prompts" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"content" text NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE "ai_prompts" (
 	CONSTRAINT "ai_prompts_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
-CREATE TABLE "ai_scheduled_tasks" (
+CREATE TABLE IF NOT EXISTS "ai_scheduled_tasks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"prompt" text NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE "ai_scheduled_tasks" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "app_settings" (
+CREATE TABLE IF NOT EXISTS "app_settings" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"key" text NOT NULL,
 	"value" text NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE "app_settings" (
 	CONSTRAINT "app_settings_key_unique" UNIQUE("key")
 );
 --> statement-breakpoint
-CREATE TABLE "competitor_attributes" (
+CREATE TABLE IF NOT EXISTS "competitor_attributes" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"competitor_id" integer NOT NULL,
 	"key" text NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE "competitor_attributes" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "competitors" (
+CREATE TABLE IF NOT EXISTS "competitors" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"slug" text NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE "competitors" (
 	CONSTRAINT "competitors_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "conversations" (
+CREATE TABLE IF NOT EXISTS "conversations" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text,
 	"last_message" text,
@@ -116,7 +116,7 @@ CREATE TABLE "conversations" (
 	"is_active" boolean DEFAULT true NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "cron_execution_log" (
+CREATE TABLE IF NOT EXISTS "cron_execution_log" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"task_id" integer NOT NULL,
 	"status" text NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE "cron_execution_log" (
 	"executed_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "documents" (
+CREATE TABLE IF NOT EXISTS "documents" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE "documents" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "entities" (
+CREATE TABLE IF NOT EXISTS "entities" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"base_type" text NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE "entities" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "expertises" (
+CREATE TABLE IF NOT EXISTS "expertises" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"slug" text NOT NULL,
 	"name" text NOT NULL,
@@ -180,7 +180,7 @@ CREATE TABLE "expertises" (
 	CONSTRAINT "expertises_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "fact_relations" (
+CREATE TABLE IF NOT EXISTS "fact_relations" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"source_fact_id" integer NOT NULL,
 	"target_fact_id" integer NOT NULL,
@@ -188,7 +188,7 @@ CREATE TABLE "fact_relations" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "facts" (
+CREATE TABLE IF NOT EXISTS "facts" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"topic_id" integer NOT NULL,
 	"content" text NOT NULL,
@@ -202,7 +202,7 @@ CREATE TABLE "facts" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "goal_activity_log" (
+CREATE TABLE IF NOT EXISTS "goal_activity_log" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"goal_id" integer NOT NULL,
 	"activity_type" text NOT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE "goal_activity_log" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "goal_key_results" (
+CREATE TABLE IF NOT EXISTS "goal_key_results" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"goal_id" integer NOT NULL,
 	"title" text NOT NULL,
@@ -226,7 +226,7 @@ CREATE TABLE "goal_key_results" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "goal_milestones" (
+CREATE TABLE IF NOT EXISTS "goal_milestones" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"goal_id" integer NOT NULL,
 	"title" text NOT NULL,
@@ -242,7 +242,7 @@ CREATE TABLE "goal_milestones" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "goal_tasks" (
+CREATE TABLE IF NOT EXISTS "goal_tasks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"milestone_id" integer NOT NULL,
 	"goal_id" integer NOT NULL,
@@ -258,7 +258,7 @@ CREATE TABLE "goal_tasks" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "goals" (
+CREATE TABLE IF NOT EXISTS "goals" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"description" text,
@@ -281,7 +281,7 @@ CREATE TABLE "goals" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "insight_memory" (
+CREATE TABLE IF NOT EXISTS "insight_memory" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"insight_type" text NOT NULL,
 	"related_entity_id" integer,
@@ -300,7 +300,7 @@ CREATE TABLE "insight_memory" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "knowledge_relations" (
+CREATE TABLE IF NOT EXISTS "knowledge_relations" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"subject_id" integer NOT NULL,
 	"relation_type" text NOT NULL,
@@ -319,7 +319,7 @@ CREATE TABLE "knowledge_relations" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "llm_call_logs" (
+CREATE TABLE IF NOT EXISTS "llm_call_logs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"task_type" text NOT NULL,
 	"provider" text NOT NULL,
@@ -334,7 +334,7 @@ CREATE TABLE "llm_call_logs" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "message_processing_runs" (
+CREATE TABLE IF NOT EXISTS "message_processing_runs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"message_id" integer NOT NULL,
 	"started_at" timestamp DEFAULT now() NOT NULL,
@@ -350,7 +350,7 @@ CREATE TABLE "message_processing_runs" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "messages" (
+CREATE TABLE IF NOT EXISTS "messages" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"content" text NOT NULL,
 	"type" text NOT NULL,
@@ -363,7 +363,7 @@ CREATE TABLE "messages" (
 	"status" text DEFAULT 'sent' NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "metric_snapshots" (
+CREATE TABLE IF NOT EXISTS "metric_snapshots" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"period" text NOT NULL,
 	"period_type" text NOT NULL,
@@ -375,7 +375,7 @@ CREATE TABLE "metric_snapshots" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "notes" (
+CREATE TABLE IF NOT EXISTS "notes" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"type" text DEFAULT 'note' NOT NULL,
@@ -394,7 +394,7 @@ CREATE TABLE "notes" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "notification_settings" (
+CREATE TABLE IF NOT EXISTS "notification_settings" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"morning_briefing_hour" integer DEFAULT 9 NOT NULL,
 	"morning_briefing_minute" integer DEFAULT 0 NOT NULL,
@@ -423,7 +423,7 @@ CREATE TABLE "notification_settings" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "proactive_messages" (
+CREATE TABLE IF NOT EXISTS "proactive_messages" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"message_type" text NOT NULL,
 	"title" text NOT NULL,
@@ -439,7 +439,7 @@ CREATE TABLE "proactive_messages" (
 	"sent_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "push_subscriptions" (
+CREATE TABLE IF NOT EXISTS "push_subscriptions" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"endpoint" text NOT NULL,
 	"p256dh" text NOT NULL,
@@ -449,7 +449,7 @@ CREATE TABLE "push_subscriptions" (
 	CONSTRAINT "push_subscriptions_endpoint_unique" UNIQUE("endpoint")
 );
 --> statement-breakpoint
-CREATE TABLE "reminders" (
+CREATE TABLE IF NOT EXISTS "reminders" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
 	"description" text,
@@ -461,7 +461,7 @@ CREATE TABLE "reminders" (
 	"sent_at" timestamp
 );
 --> statement-breakpoint
-CREATE TABLE "session_compactions" (
+CREATE TABLE IF NOT EXISTS "session_compactions" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"session_id" text NOT NULL,
 	"summary" text NOT NULL,
@@ -471,7 +471,7 @@ CREATE TABLE "session_compactions" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "session_context" (
+CREATE TABLE IF NOT EXISTS "session_context" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"session_id" text NOT NULL,
 	"current_topics" text,
@@ -483,7 +483,7 @@ CREATE TABLE "session_context" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "skills" (
+CREATE TABLE IF NOT EXISTS "skills" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"slug" text NOT NULL,
 	"name" text NOT NULL,
@@ -500,7 +500,7 @@ CREATE TABLE "skills" (
 	CONSTRAINT "skills_slug_unique" UNIQUE("slug")
 );
 --> statement-breakpoint
-CREATE TABLE "subagent_runs" (
+CREATE TABLE IF NOT EXISTS "subagent_runs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"parent_message_id" integer NOT NULL,
 	"task_type" text NOT NULL,
@@ -517,7 +517,7 @@ CREATE TABLE "subagent_runs" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "summaries" (
+CREATE TABLE IF NOT EXISTS "summaries" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"content" text NOT NULL,
 	"message_count" integer NOT NULL,
@@ -526,7 +526,7 @@ CREATE TABLE "summaries" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "ticktick_tasks" (
+CREATE TABLE IF NOT EXISTS "ticktick_tasks" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"task_id" text NOT NULL,
 	"project_id" text NOT NULL,
@@ -545,7 +545,7 @@ CREATE TABLE "ticktick_tasks" (
 	CONSTRAINT "ticktick_tasks_task_id_unique" UNIQUE("task_id")
 );
 --> statement-breakpoint
-CREATE TABLE "tool_call_logs" (
+CREATE TABLE IF NOT EXISTS "tool_call_logs" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"session_id" text,
 	"message_id" integer,
@@ -561,7 +561,7 @@ CREATE TABLE "tool_call_logs" (
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "topic_summaries" (
+CREATE TABLE IF NOT EXISTS "topic_summaries" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"topic_id" integer NOT NULL,
 	"summary" text NOT NULL,
@@ -570,7 +570,7 @@ CREATE TABLE "topic_summaries" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "topics" (
+CREATE TABLE IF NOT EXISTS "topics" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"parent_id" integer,
@@ -581,7 +581,7 @@ CREATE TABLE "topics" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "user_preferences" (
+CREATE TABLE IF NOT EXISTS "user_preferences" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"key" text NOT NULL,
 	"value" text NOT NULL,
@@ -594,7 +594,7 @@ CREATE TABLE "user_preferences" (
 	CONSTRAINT "user_preferences_key_unique" UNIQUE("key")
 );
 --> statement-breakpoint
-CREATE TABLE "user_profile" (
+CREATE TABLE IF NOT EXISTS "user_profile" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"key" text NOT NULL,
 	"value" text NOT NULL,
@@ -610,7 +610,7 @@ CREATE TABLE "user_profile" (
 	CONSTRAINT "user_profile_key_unique" UNIQUE("key")
 );
 --> statement-breakpoint
-CREATE TABLE "user_skill_settings" (
+CREATE TABLE IF NOT EXISTS "user_skill_settings" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"skill_id" integer NOT NULL,
 	"is_enabled" boolean NOT NULL,
