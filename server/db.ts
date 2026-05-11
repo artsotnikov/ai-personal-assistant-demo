@@ -21,6 +21,15 @@ export const db = drizzle(pool, { schema });
  */
 export async function runDrizzleMigrations(): Promise<void> {
   try {
+    // Активируем расширение pgvector (необходимо для столбцов vector(1536))
+    const client = await pool.connect();
+    try {
+      await client.query('CREATE EXTENSION IF NOT EXISTS vector');
+      console.log('[DrizzleMigrate] ✅ Расширение pgvector активировано');
+    } finally {
+      client.release();
+    }
+
     // Определяем путь к миграциям относительно текущего файла
     const currentDir = path.dirname(fileURLToPath(import.meta.url));
     const migrationsFolder = path.resolve(currentDir, '..', 'migrations');
