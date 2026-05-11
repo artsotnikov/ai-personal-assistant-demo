@@ -53,8 +53,8 @@ const FALLBACK_OPENROUTER_MODELS: AIModel[] = [
 ];
 
 const FALLBACK_DEEPSEEK_MODELS: AIModel[] = [
-    { id: 'deepseek-chat', name: 'DeepSeek Chat (V3)', provider: 'deepseek' },
-    { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner (R1)', provider: 'deepseek' },
+    { id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash', provider: 'deepseek', contextLength: 128000 },
+    { id: 'deepseek-v4-pro', name: 'DeepSeek V4 Pro', provider: 'deepseek', contextLength: 128000 },
 ];
 
 /**

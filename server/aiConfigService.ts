@@ -271,7 +271,7 @@ export async function getAIClientForTask(taskType: AITaskType): Promise<{
 // Дефолт (если в БД нет записи): google/gemini-2.5-flash через OpenRouter.
 const HARDCODED_FALLBACK_DEFAULTS = {
     provider: 'deepseek' as AIProvider,
-    model: 'deepseek-chat',
+    model: 'deepseek-v4-flash',
     temperature: 0.7,
     maxTokens: 4000,
 };

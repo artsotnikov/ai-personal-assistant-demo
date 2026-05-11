@@ -25,9 +25,9 @@ const OPENROUTER_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 часа
  * Ключ — точное имя модели в API провайдера.
  */
 const DIRECT_PROVIDER_FALLBACK: Record<string, number> = {
-    // DeepSeek прямой API
-    'deepseek-chat': 128_000,
-    'deepseek-reasoner': 64_000,
+    // DeepSeek прямой API (V4 — модели обновлены в 2026)
+    'deepseek-v4-flash': 128_000,
+    'deepseek-v4-pro': 128_000,
     // OpenAI прямой API
     'gpt-4.1-mini': 128_000,
     'gpt-4.1': 128_000,

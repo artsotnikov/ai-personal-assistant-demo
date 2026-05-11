@@ -159,7 +159,7 @@ function getModelName(provider: AIProvider, customModel?: string): string {
     case 'openrouter':
       return 'openai/gpt-4.1-mini';
     case 'deepseek':
-      return 'deepseek-chat';
+      return 'deepseek-v4-flash';
     case 'antigravity':
       return 'gemini-3.1-pro-high';
     case 'custom':
@@ -191,7 +191,7 @@ async function polishTranscription(rawText: string): Promise<string> {
       model = 'openai/gpt-4.1-mini';
     } else if (process.env.DEEPSEEK_API_KEY) {
       client = getDeepSeekClient();
-      model = 'deepseek-chat';
+      model = 'deepseek-v4-flash';
     } else if (process.env.OPENAI_API_KEY) {
       client = getOpenAIClient();
       model = 'gpt-4o-mini';
